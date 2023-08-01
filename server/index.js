@@ -7,25 +7,12 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 import productRoutes from "./routes/productRoutes.js";
 import bodyParser from "body-parser";
 import path from "path";
+import {fileURLToPath} from "url"
 import morgan from "morgan";
 dotenv.config();
 const MONGO_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 9000;
 const app = express();
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, "../client/build")));
-
-app.use("/api/v1/auth", authRoutes);
-app.use("/api/v1/category", categoryRoutes);
-app.use("/api/v1/product", productRoutes);
-
-app.use("*", function (req, res) {
-  res.sendFile(path.join(__dirname, "../client/build/index.html"));
-});
 
 mongoose
   .connect(MONGO_URL, {
@@ -38,3 +25,20 @@ mongoose
     );
   })
   .catch((error) => console.log(`${error} did Not Connect`));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename)
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.json());
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "../client/build")));
+app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/category", categoryRoutes);
+app.use("/api/v1/product", productRoutes);
+
+app.use("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../client/build/index.html"));
+});
+
+
