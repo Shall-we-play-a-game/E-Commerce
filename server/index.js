@@ -38,7 +38,7 @@ app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/product", productRoutes);
 
 app.get("*", function (req, res) {
-  const index = path.join(__dirname, 'client', 'build', 'index.html');
+  const index = path.resolve(__dirname, 'client/build', 'index.html');
   res.sendFile(index)
 });
 
